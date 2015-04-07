@@ -4,7 +4,7 @@ from werkzeug.contrib.fixers import ProxyFix
 from requests import get
 from hmac import new
 from hashlib import sha1
-from ipaddress import ip_address, ip_network
+from ipaddress import ip_address, ip_network, IPv6Address
 
 class HookServer(Flask):
 
@@ -40,6 +40,8 @@ class HookServer(Flask):
                 # Python 3.x
                 else:
                     ip = ip_address(request.remote_addr)
+                if isinstance(ip, IPv6Address) and ip.ipv4_mapped:
+                    ip = ip.ipv4_mapped
                 for block in get('https://api.github.com/meta').json()['hooks']:
                     if ip in ip_network(block):
                         break
