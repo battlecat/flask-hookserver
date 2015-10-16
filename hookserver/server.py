@@ -20,7 +20,7 @@ class HookServer(Flask):
 
         self.config['KEY'] = key
         self.config['VALIDATE_IP'] = True
-        self.config['VALIDATE_HMAC'] = True
+        self.config['VALIDATE_SIGNATURE'] = True
         self.hooks = {}
 
         @self.errorhandler(400)
@@ -43,8 +43,8 @@ class HookServer(Flask):
                     raise Forbidden('Requests must originate from GitHub')
 
         @self.before_request
-        def validate_hmac():
-            if self.config['VALIDATE_HMAC']:
+        def validate_signature():
+            if self.config['VALIDATE_SIGNATURE']:
                 key = self.config['KEY']
                 signature = request.headers.get('X-Hub-Signature')
                 data = request.get_data()
