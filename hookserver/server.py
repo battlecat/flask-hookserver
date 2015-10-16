@@ -6,6 +6,7 @@ Contains the main Flask app
 from flask import Flask, request
 from werkzeug.exceptions import HTTPException, BadRequest, Forbidden
 from werkzeug.contrib.fixers import ProxyFix
+from .util import is_github_ip, check_signature
 
 
 class HookServer(Flask):
