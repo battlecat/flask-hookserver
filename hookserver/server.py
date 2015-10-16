@@ -11,7 +11,7 @@ from .util import is_github_ip, check_signature
 
 class HookServer(Flask):
 
-    def __init__(self, import_name, key, num_proxies=None, url='/hooks'):
+    def __init__(self, import_name, key=None, num_proxies=None, url='/hooks'):
 
         Flask.__init__(self, import_name)
 
