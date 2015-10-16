@@ -6,6 +6,6 @@ flask-hookserver: GitHub webhooks using Flask
 :license: MIT, see LICENSE for more details.
 """
 
-__version__ = '0.1.4'
-
 from .server import HookServer
+
+__version__ = '0.1.4'

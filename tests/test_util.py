@@ -9,10 +9,11 @@ from time import sleep, time
 
 def test_timed_memoize():
     i = [0]
+
     @timed_memoize(0.2)
     def get_i():
         return i[0]
-    
+
     assert get_i() == 0
     i[0] = 1
     assert get_i() == 0

@@ -14,25 +14,25 @@ import werkzeug.security
 
 class timed_memoize(object):
     """Decorator that caches the value of an argumentless function"""
-    
+
     def __init__(self, timeout):
         """Initialize with timeout in seconds"""
         self.timeout = timeout
-        self.last_update = None
+        self.last = None
         self.cache = None
-    
+
     def __call__(self, fn):
         """Create the wrapped function"""
         @wraps(fn)
         def inner():
-            if self.last_update is None or time() - self.last_update > self.timeout:
+            if self.last is None or time() - self.last > self.timeout:
                 self.cache = fn()
                 self.last_update = time()
             return self.cache
         return inner
 
 
-@timed_memoize(60) # So we don't get rate limited
+@timed_memoize(60)  # So we don't get rate limited
 def load_github_hooks():
     """Request GitHub's IP block from their API"""
     return requests.get('https://api.github.com/meta').json()['hooks']
