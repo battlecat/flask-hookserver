@@ -1,5 +1,13 @@
 from setuptools import setup
+import re
 import sys
+
+version = ''
+with open('hookserver.py') as f:
+    version = re.search(r'__version__\s*=\s*\'([\d.]+)\'', f.read()).group(1)
+
+if not version:
+    raise RuntimeError('Couldn\'t find version string')
 
 requirements = [
     'Flask>=0.10.1',
@@ -11,9 +19,8 @@ if sys.version_info < (3, 3):
 
 setup(
     name='flask-hookserver',
-    version='0.1.4',
+    version=version,
     url='https://github.com/nickfrostatx/flask-hookserver',
-    download_url='https://github.com/nickfrostatx/flask-hookserver/tarball/v0.1.4',
     author='Nick Frost',
     author_email='nickfrostatx@gmail.com',
     description='Server for GitHub webhooks using Flask',
@@ -22,10 +29,19 @@ setup(
     install_requires=requirements,
     keywords = ['github', 'webhooks', 'flask'],
     classifiers = [
+        'Development Status :: 4 - Beta',
+        'Framework :: Flask',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
+        'Programming Language :: Python :: 2.6',
+        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: Implementation :: CPython',
+        'Programming Language :: Python :: Implementation :: PyPy',
         'Topic :: Software Development',
     ],
 )

@@ -6,6 +6,10 @@ from hmac import new
 from hashlib import sha1
 from ipaddress import ip_address, ip_network, IPv6Address
 
+
+__version__ = '0.1.4'
+
+
 class HookServer(Flask):
 
     def __init__(self, import_name, key, num_proxies=None):
