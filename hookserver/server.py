@@ -50,10 +50,10 @@ class HookServer(Flask):
                 data = request.get_data()
 
                 if not signature:
-                    raise BadRequest('Missing HMAC signature')
+                    raise BadRequest('Missing signature')
 
                 if not check_signature(signature, key, data):
-                    raise BadRequest('Wrong HMAC signature')
+                    raise BadRequest('Wrong signature')
 
         @self.route(url, methods=['POST'])
         def hook():
