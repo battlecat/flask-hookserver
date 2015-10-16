@@ -10,6 +10,16 @@ from ipaddress import ip_address, ip_network, IPv6Address
 __version__ = '0.1.4'
 
 
+def is_github_ip(ip):
+    """Verify that an IP address is owned by GitHub"""
+    if isinstance(ip, IPv6Address) and ip.ipv4_mapped:
+        ip = ip.ipv4_mapped
+    for block in get('https://api.github.com/meta').json()['hooks']:
+        if ip in ip_network(block):
+            return True
+    return False
+
+
 class HookServer(Flask):
 
     def __init__(self, import_name, key, num_proxies=None):
@@ -44,12 +54,7 @@ class HookServer(Flask):
                 # Python 3.x
                 else:
                     ip = ip_address(request.remote_addr)
-                if isinstance(ip, IPv6Address) and ip.ipv4_mapped:
-                    ip = ip.ipv4_mapped
-                for block in get('https://api.github.com/meta').json()['hooks']:
-                    if ip in ip_network(block):
-                        break
-                else:
+                if not is_github_ip(ip):
                     raise Forbidden('Requests must originate from GitHub')
 
         @self.before_request
