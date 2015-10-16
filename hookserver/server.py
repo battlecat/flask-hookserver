@@ -11,7 +11,7 @@ from .util import is_github_ip, check_signature
 
 class HookServer(Flask):
 
-    def __init__(self, import_name, key, num_proxies=None):
+    def __init__(self, import_name, key, num_proxies=None, url='/hooks'):
 
         Flask.__init__(self, import_name)
 
@@ -55,7 +55,7 @@ class HookServer(Flask):
                 if not check_signature(signature, key, data):
                     raise BadRequest('Wrong HMAC signature')
 
-        @self.route('/hooks', methods=['POST'])
+        @self.route(url, methods=['POST'])
         def hook():
             event = request.headers.get('X-GitHub-Event')
             guid = request.headers.get('X-GitHub-Delivery')
