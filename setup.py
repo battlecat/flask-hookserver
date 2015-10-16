@@ -27,8 +27,8 @@ setup(
     license='MIT',
     py_modules=['hookserver'],
     install_requires=requirements,
-    keywords = ['github', 'webhooks', 'flask'],
-    classifiers = [
+    keywords=['github', 'webhooks', 'flask'],
+    classifiers=[
         'Development Status :: 4 - Beta',
         'Framework :: Flask',
         'Intended Audience :: Developers',
