@@ -1,6 +1,15 @@
 GitHub webhooks using Flask
 ###########################
 
+.. image:: https://img.shields.io/travis/nickfrostatx/flask-hookserver.svg
+        :target: https://travis-ci.org/nickfrostatx/flask-hookserver
+
+.. image:: https://img.shields.io/pypi/v/flask-hookserver.svg
+    :target: https://pypi.python.org/pypi/flask-hookserver
+
+.. image:: https://img.shields.io/pypi/l/flask-hokserver.svg
+    :target: https://raw.githubusercontent.com/nickfrostatx/flask-hookserver/master/LICENSE
+
 A tool that receives webhooks from GitHub and passes the data along to a user-defined function. It validates the HMAC hash, and checks that the originating IP address comes from the GitHub IP block.
 
 Example
