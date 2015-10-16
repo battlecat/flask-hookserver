@@ -27,7 +27,7 @@ class timed_memoize(object):
         def inner():
             if self.last is None or time() - self.last > self.timeout:
                 self.cache = fn()
-                self.last_update = time()
+                self.last = time()
             return self.cache
         return inner
 
