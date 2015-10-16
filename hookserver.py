@@ -76,14 +76,16 @@ class HookServer(Flask):
         @self.route('/hooks', methods=['POST'])
         def hook():
             event = request.headers.get('X-GitHub-Event')
+            guid = request.headers.get('X-GitHub-Delivery')
+            data = request.get_json()
+
             if not event:
                 raise BadRequest('No hook given')
-            guid = request.headers.get('X-GitHub-Delivery')
-            if not guid:
+            elif not guid:
                 raise BadRequest('No event GUID')
-            data = request.get_json()
-            if not data:
-                raise BadRequest('No payload data')
+            elif not data:
+                raise BadRequest('Request body wasn\'t valid JSON')
+
             if event in self.hooks:
                 return self.hooks[event](data, guid)
             else:
