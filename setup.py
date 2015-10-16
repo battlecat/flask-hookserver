@@ -3,7 +3,7 @@ import re
 import sys
 
 version = ''
-with open('hookserver.py') as f:
+with open('hookserver/__init__.py') as f:
     version = re.search(r'__version__\s*=\s*\'([\d.]+)\'', f.read()).group(1)
 
 if not version:
@@ -25,7 +25,7 @@ setup(
     author_email='nickfrostatx@gmail.com',
     description='Server for GitHub webhooks using Flask',
     license='MIT',
-    py_modules=['hookserver'],
+    packages=['hookserver'],
     install_requires=requirements,
     keywords=['github', 'webhooks', 'flask'],
     classifiers=[
