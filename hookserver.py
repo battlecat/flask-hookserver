@@ -13,7 +13,7 @@ __version__ = '0.1.4'
 def is_github_ip(ip_str):
     """Verify that an IP address is owned by GitHub"""
     ip = ipaddress.ip_address(ip_str)
-    if isinstance(ip, ipaddress.IPv6Address) and ip.ipv4_mapped:
+    if ip.version == 6 and ip.ipv4_mapped:
         ip = ip.ipv4_mapped
     for block in requests.get('https://api.github.com/meta').json()['hooks']:
         if ip in ipaddress.ip_network(block):
