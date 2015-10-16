@@ -21,6 +21,12 @@ def is_github_ip(ip_str):
     return False
 
 
+def check_signature(signature, key, data):
+    """Compute the HMAC signature and test against a given hash"""
+    digest = new(key, data, sha1).hexdigest()
+    return ('sha1=%s' % digest) == signature
+
+
 class HookServer(Flask):
 
     def __init__(self, import_name, key, num_proxies=None):
@@ -64,8 +70,7 @@ class HookServer(Flask):
                 if not signature:
                     raise BadRequest('Missing HMAC signature')
                 payload = request.get_data()
-                digest = new(key, payload, sha1).hexdigest()
-                if ('sha1=%s' % digest) != signature:
+                if not check_signature(signature, key, payload):
                     raise BadRequest('Wrong HMAC signature')
 
         @self.route('/hooks', methods=['POST'])
