@@ -1,10 +1,10 @@
 from flask import Flask, request
 from werkzeug.exceptions import HTTPException, BadRequest, Forbidden
 from werkzeug.contrib.fixers import ProxyFix
-from requests import get
-from hmac import new
-from hashlib import sha1
-from ipaddress import ip_address, ip_network, IPv6Address
+import hashlib
+import hmac
+import ipaddress
+import requests
 
 
 __version__ = '0.1.4'
@@ -12,18 +12,18 @@ __version__ = '0.1.4'
 
 def is_github_ip(ip_str):
     """Verify that an IP address is owned by GitHub"""
-    ip = ip_address(ip_str)
-    if isinstance(ip, IPv6Address) and ip.ipv4_mapped:
+    ip = ipaddress.ip_address(ip_str)
+    if isinstance(ip, ipaddress.IPv6Address) and ip.ipv4_mapped:
         ip = ip.ipv4_mapped
-    for block in get('https://api.github.com/meta').json()['hooks']:
-        if ip in ip_network(block):
+    for block in requests.get('https://api.github.com/meta').json()['hooks']:
+        if ip in ipaddress.ip_network(block):
             return True
     return False
 
 
 def check_signature(signature, key, data):
     """Compute the HMAC signature and test against a given hash"""
-    digest = new(key, data, sha1).hexdigest()
+    digest = hmac.new(key, data, hashlib.sha1).hexdigest()
     return ('sha1=%s' % digest) == signature
 
 
