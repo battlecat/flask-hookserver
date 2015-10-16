@@ -23,21 +23,21 @@ def test_timed_memoize():
 
 
 def test_correct_ip():
-    assert is_github_ip(u'192.30.252.1') == True
+    assert is_github_ip('192.30.252.1') == True
 
 
 def test_mapped_ip():
-    assert is_github_ip(u'::ffff:c01e:fc01') == True
+    assert is_github_ip('::ffff:c01e:fc01') == True
 
 
 def test_bad_ips():
-    assert is_github_ip(u'192.30.251.255') == False
-    assert is_github_ip(u'192.31.0.1') == False
+    assert is_github_ip('192.30.251.255') == False
+    assert is_github_ip('192.31.0.1') == False
 
 
 def test_bad_mapped_ips():
-    assert is_github_ip(u'::ffff:c01e:fbff') == False
-    assert is_github_ip(u'::ffff:c01f:1') == False
+    assert is_github_ip('::ffff:c01e:fbff') == False
+    assert is_github_ip('::ffff:c01f:1') == False
 
 
 def test_good_signatures():
