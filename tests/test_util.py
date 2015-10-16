@@ -3,7 +3,23 @@
 Test utility functions used for request validation
 """
 
-from hookserver import is_github_ip, check_signature
+from hookserver import timed_memoize, is_github_ip, check_signature
+from time import sleep, time
+
+
+def test_timed_memoize():
+    i = [0]
+    @timed_memoize(0.2)
+    def get_i():
+        return i[0]
+    
+    assert get_i() == 0
+    i[0] = 1
+    assert get_i() == 0
+    sleep(0.1)
+    assert get_i() == 0
+    sleep(0.15)
+    assert get_i() == 1
 
 
 def test_correct_ip():

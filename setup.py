@@ -10,7 +10,6 @@ if not version:
     raise RuntimeError('Couldn\'t find version string')
 
 requirements = [
-    'CacheControl>=0.11.5',
     'Flask>=0.10.1',
     'requests>=2.3.0',
     'Werkzeug>=0.9',
