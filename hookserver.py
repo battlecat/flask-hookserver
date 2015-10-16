@@ -1,6 +1,7 @@
 from flask import Flask, request
 from werkzeug.exceptions import HTTPException, BadRequest, Forbidden
 from werkzeug.contrib.fixers import ProxyFix
+from werkzeug.security import safe_str_cmp
 from functools import wraps
 from time import time
 import hashlib
@@ -51,8 +52,11 @@ def is_github_ip(ip_str):
 
 def check_signature(signature, key, data):
     """Compute the HMAC signature and test against a given hash"""
-    digest = hmac.new(key, data, hashlib.sha1).hexdigest()
-    return hmac.compare_digest('sha1=' + digest, signature)
+    digest = 'sha1=' + hmac.new(key, data, hashlib.sha1).hexdigest()
+    if not hasattr(hmac, 'compare_digest'):
+        # Python 2.6
+        return safe_str_cmp(digest, signature)
+    return hmac.compare_digest(digest, signature)
 
 
 class HookServer(Flask):
