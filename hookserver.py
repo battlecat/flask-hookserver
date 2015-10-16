@@ -37,6 +37,8 @@ class HookServer(Flask):
             self.wsgi_app = ProxyFix(self.wsgi_app, num_proxies=num_proxies)
 
         self.config['KEY'] = key
+        self.config['VALIDATE_IP'] = True
+        self.config['VALIDATE_HMAC'] = True
         self.hooks = {}
 
         @self.errorhandler(400)
@@ -54,7 +56,7 @@ class HookServer(Flask):
 
         @self.before_request
         def validate_ip():
-            if not self.debug:
+            if self.config['VALIDATE_IP']:
                 ip = request.remote_addr
                 # Python 2.x
                 if hasattr(str, 'decode'):
@@ -64,7 +66,7 @@ class HookServer(Flask):
 
         @self.before_request
         def validate_hmac():
-            if not self.debug:
+            if self.config['VALIDATE_HMAC']:
                 key = self.config['KEY']
                 signature = request.headers.get('X-Hub-Signature')
                 data = request.get_data()
