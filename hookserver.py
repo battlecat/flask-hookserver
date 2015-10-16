@@ -1,6 +1,7 @@
 from flask import Flask, request
 from werkzeug.exceptions import HTTPException, BadRequest, Forbidden
 from werkzeug.contrib.fixers import ProxyFix
+import cachecontrol
 import hashlib
 import hmac
 import ipaddress
@@ -10,12 +11,13 @@ import requests
 __version__ = '0.1.4'
 
 
+session = cachecontrol.CacheControl(requests.session())
 def is_github_ip(ip_str):
     """Verify that an IP address is owned by GitHub"""
     ip = ipaddress.ip_address(ip_str)
     if ip.version == 6 and ip.ipv4_mapped:
         ip = ip.ipv4_mapped
-    for block in requests.get('https://api.github.com/meta').json()['hooks']:
+    for block in session.get('https://api.github.com/meta').json()['hooks']:
         if ip in ipaddress.ip_network(block):
             return True
     return False
