@@ -37,8 +37,9 @@ class HookServer(Flask):
 
         @self.before_request
         def validate_ip():
-            if self.config['VALIDATE_IP'] and not is_github_ip(request.remote_addr):
-                raise Forbidden('Requests must originate from GitHub')
+            if self.config['VALIDATE_IP']:
+                if not is_github_ip(request.remote_addr):
+                    raise Forbidden('Requests must originate from GitHub')
 
         @self.before_request
         def validate_hmac():
