@@ -24,7 +24,7 @@ def is_github_ip(ip_str):
 def check_signature(signature, key, data):
     """Compute the HMAC signature and test against a given hash"""
     digest = hmac.new(key, data, hashlib.sha1).hexdigest()
-    return ('sha1=%s' % digest) == signature
+    return hmac.compare_digest('sha1=' + digest, signature)
 
 
 class HookServer(Flask):
