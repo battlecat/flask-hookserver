@@ -34,7 +34,7 @@ class HookServer(Flask):
             else:
                 msg = 'Internal server error'
                 status = 500
-            return msg, status
+            return msg + '\n', status
 
         @self.before_request
         def validate_ip():
@@ -71,7 +71,7 @@ class HookServer(Flask):
             if event in self.hooks:
                 return self.hooks[event](data, guid)
             else:
-                return 'Hook not used'
+                return 'Hook not used\n'
 
     def hook(self, hook_name):
         def _wrapper(fn):
