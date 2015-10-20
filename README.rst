@@ -36,7 +36,7 @@ Usage
 
     app.run()
 
-The `HookServer` constructor takes the following parameters:
+The ``HookServer`` constructor takes the following parameters:
 
 * **key** - Byte sequence containing your shared secret key. This is required if ``VALIDATE_SIGNATURE`` is on
 * **num_proxies** - If you're using a reverse proxy, this is required to correctly identify the client's IP address. Only really necessary if ``VALIDATE_IP`` is on. See the `Werkzeug documentation <http://werkzeug.pocoo.org/docs/contrib/fixers/#werkzeug.contrib.fixers.ProxyFix>`_ for more info.
