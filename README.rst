@@ -10,16 +10,25 @@ GitHub webhooks using Flask
 .. image:: https://img.shields.io/pypi/l/flask-hookserver.svg
     :target: https://raw.githubusercontent.com/nickfrostatx/flask-hookserver/master/LICENSE
 
-A tool that receives webhooks from GitHub and passes the data along to a user-defined function. It validates the HMAC hash, and checks that the originating IP address comes from the GitHub IP block.
+A tool that receives webhooks from GitHub and passes the data along to a
+user-defined function. It validates the HMAC hash, and checks that the
+originating IP address comes from the GitHub IP block.
 
-Example
--------
+Installation
+------------
+
+.. code-block:: bash
+
+    $ pip install flask-hookserver
+
+Usage
+-----
 
 .. code-block:: python
 
     from hookserver import HookServer
 
-    app = HookServer(__name__, b'mySecretKey')
+    app = HookServer(__name__, key=b'mySecretKey', num_proxies=1, url='/hooks')
 
     @app.hook('ping')
     def ping(data, guid):
@@ -27,7 +36,20 @@ Example
 
     app.run()
 
-num_proxies
------------
+The `HookServer` constructor takes the following parameters:
 
-The optional parameter `num_proxies` is used to prevent clients from pretending to be on the GitHub IP block. Set it to the number of proxies you have in front of your WSGI server. See the `Werkzeug documentation <http://werkzeug.pocoo.org/docs/contrib/fixers/#werkzeug.contrib.fixers.ProxyFix>`_ for more info.
+* **key** - Byte sequence containing your shared secret key. This is required if ``VALIDATE_SIGNATURE`` is on
+* **num_proxies** - If you're using a reverse proxy, this is required to correctly identify the client's IP address. Only really necessary if ``VALIDATE_IP`` is on. See the `Werkzeug documentation <http://werkzeug.pocoo.org/docs/contrib/fixers/#werkzeug.contrib.fixers.ProxyFix>`_ for more info.
+* **url** (default ``'/hooks'``) - The URI that GitHub will make the POST request to (for example, ``https://repo.yourserver.com/hooks``)
+
+Config
+------
+
+Signature and IP validation are both optional, but turned on by default.  They
+can each be turned off with a config flag.
+
+.. code-block:: python
+    
+    app = HookServer(__name__)
+    app.config['VALIDATE_IP'] = False
+    app.config['VALIDATE_SIGNATURE'] = False
