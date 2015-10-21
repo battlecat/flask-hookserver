@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Test utility functions used for request validation
-"""
+"""Test utility functions used for request validation."""
 
 from hookserver.util import timed_memoize, is_github_ip, check_signature
 from time import sleep, time

@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Contains the main Flask app
-"""
+"""Contains the main Flask app."""
 
 from flask import Flask, request
 from werkzeug.exceptions import HTTPException, BadRequest, Forbidden

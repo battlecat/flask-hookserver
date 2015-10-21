@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Some helper functions
-"""
+"""Some helper functions."""
 
 from functools import wraps
 from time import time
@@ -13,16 +11,17 @@ import werkzeug.security
 
 
 class timed_memoize(object):
-    """Decorator that caches the value of an argumentless function"""
+
+    """Decorator that caches the value of an argumentless function."""
 
     def __init__(self, timeout):
-        """Initialize with timeout in seconds"""
+        """Initialize with timeout in seconds."""
         self.timeout = timeout
         self.last = None
         self.cache = None
 
     def __call__(self, fn):
-        """Create the wrapped function"""
+        """Create the wrapped function."""
         @wraps(fn)
         def inner():
             if self.last is None or time() - self.last > self.timeout:
@@ -34,12 +33,12 @@ class timed_memoize(object):
 
 @timed_memoize(60)  # So we don't get rate limited
 def load_github_hooks():
-    """Request GitHub's IP block from their API"""
+    """Request GitHub's IP block from their API."""
     return requests.get('https://api.github.com/meta').json()['hooks']
 
 
 def is_github_ip(ip_str):
-    """Verify that an IP address is owned by GitHub"""
+    """Verify that an IP address is owned by GitHub."""
     # Python 2.x
     if hasattr(str, 'decode'):
         ip_str = ip_str.decode('utf-8')
@@ -55,7 +54,7 @@ def is_github_ip(ip_str):
 
 
 def check_signature(signature, key, data):
-    """Compute the HMAC signature and test against a given hash"""
+    """Compute the HMAC signature and test against a given hash."""
     digest = 'sha1=' + hmac.new(key, data, hashlib.sha1).hexdigest()
     if not hasattr(hmac, 'compare_digest'):
         # Python 2.6 doesn't have hmac.compare_digest
