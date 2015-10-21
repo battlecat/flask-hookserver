@@ -37,7 +37,7 @@ def load_github_hooks():
     """Request GitHub's IP block from their API."""
     try:
         return requests.get('https://api.github.com/meta').json()['hooks']
-    except ValueError:
+    except KeyError:
         # This should not happen if timed_memoize is working correctly
         raise werkzeug.exceptions.ServiceUnavailable('Error reaching GitHub')
 
