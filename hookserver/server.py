@@ -79,11 +79,9 @@ class HookServer(Flask):
             data = request.get_json()
 
             if event is None:
-                raise BadRequest('No hook given')
+                raise BadRequest('Missing event')
             elif guid is None:
-                raise BadRequest('No event GUID')
-            elif data is None:
-                raise BadRequest('Request body wasn\'t valid JSON')
+                raise BadRequest('Missing GUID')
 
             if event in self.hooks:
                 return self.hooks[event](data, guid)
