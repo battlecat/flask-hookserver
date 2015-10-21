@@ -7,6 +7,7 @@ import hashlib
 import hmac
 import ipaddress
 import requests
+import werkzeug.exceptions
 import werkzeug.security
 
 
@@ -34,7 +35,11 @@ class timed_memoize(object):
 @timed_memoize(60)  # So we don't get rate limited
 def load_github_hooks():
     """Request GitHub's IP block from their API."""
-    return requests.get('https://api.github.com/meta').json()['hooks']
+    try:
+        return requests.get('https://api.github.com/meta').json()['hooks']
+    except ValueError:
+        # This should not happen if timed_memoize is working correctly
+        raise werkzeug.exceptions.ServiceUnavailable('Error reaching GitHub')
 
 
 def is_github_ip(ip_str):
