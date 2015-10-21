@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+"""Setuptools."""
+
 from setuptools import setup
 import re
 import sys
