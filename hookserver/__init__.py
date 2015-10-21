@@ -8,4 +8,4 @@ flask-hookserver: GitHub webhooks using Flask.
 
 from .server import HookServer
 
-__version__ = '0.1.4'
+__version__ = '0.2.0'
