@@ -11,8 +11,27 @@ from .util import is_github_ip, check_signature
 
 class HookServer(Flask):
 
-    def __init__(self, import_name, key=None, num_proxies=None, url='/hooks'):
+    """The GitHub webhooks app.
 
+    Here is the flow for each post request:
+     - If VALIDATE_IP is set, see if the source IP address comes from
+       the GitHub IP block (err 403)
+     - if VALIDATE_SIGNATURE is set, compute the HMAC signature and
+       compare against the provided X-Hub-Signature header (err 400)
+     - See if X-GitHub-Event or X-GitHub-Delivery are missing (err 400)
+     - Make sure we received valid JSON (err 400)
+     - If the supplied hook has been registered, call it with the
+       provided data
+    """
+
+    def __init__(self, import_name, key=None, num_proxies=None, url='/hooks'):
+        """Set up the app.
+
+        - Initial setup (ProxyFix, default config vars)
+        - Register error handler
+        - Add pre-request hooks
+        - Add main URL route
+        """
         Flask.__init__(self, import_name)
 
         if num_proxies is not None:
@@ -74,6 +93,7 @@ class HookServer(Flask):
                 return 'Hook not used\n'
 
     def hook(self, hook_name):
+        """Register a function to be called on a GitHub event."""
         def _wrapper(fn):
             if hook_name not in self.hooks:
                 self.hooks[hook_name] = fn
