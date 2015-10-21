@@ -49,7 +49,7 @@ Signature and IP validation are both optional, but turned on by default.  They
 can each be turned off with a config flag.
 
 .. code-block:: python
-    
+
     app = HookServer(__name__)
     app.config['VALIDATE_IP'] = False
     app.config['VALIDATE_SIGNATURE'] = False
