@@ -12,6 +12,12 @@ with open('hookserver/__init__.py') as f:
 if not version:
     raise RuntimeError('Couldn\'t find version string')
 
+with open('README.rst', 'r') as f:
+    readme = f.read()
+
+with open('HISTORY.rst', 'r') as f:
+    history = f.read()
+
 requirements = [
     'Flask>=0.10.1',
     'requests>=2.3.0',
@@ -27,6 +33,7 @@ setup(
     author='Nick Frost',
     author_email='nickfrostatx@gmail.com',
     description='Server for GitHub webhooks using Flask',
+    long_description=readme + '\n\n' + history,
     license='MIT',
     packages=['hookserver'],
     install_requires=requirements,
