@@ -3,6 +3,11 @@
 History
 -------
 
+0.2.1 (2015-10-21)
+++++++++++++++++++
+
+- Install Requests security dependencies
+
 0.2.0 (2015-10-21)
 ++++++++++++++++++
 
