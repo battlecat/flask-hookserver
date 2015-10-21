@@ -32,6 +32,7 @@ setup(
         'Development Status :: 4 - Beta',
         'Framework :: Flask',
         'Intended Audience :: Developers',
+        'Intended Audience :: System Administrators',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.6',
