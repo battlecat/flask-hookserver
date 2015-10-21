@@ -9,6 +9,7 @@ import pytest
 def nocheck():
     """Test client for an app that ignores the IP and signature"""
     app = hookserver.HookServer(__name__)
+    app.config['DEBUG'] = True
     app.config['VALIDATE_IP'] = False
     app.config['VALIDATE_SIGNATURE'] = False
     return app.test_client()
