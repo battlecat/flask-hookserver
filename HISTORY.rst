@@ -3,6 +3,17 @@
 History
 -------
 
+0.2.0 (2015-10-21)
+++++++++++++++++++
+
+- Proper Python 2.7 support
+- Respect GitHub rate limit of 60 requests per hour
+- Make key param to HookServer optional
+- Add optional param url
+- Use VALIDATE_IP and VALIDATE_SIGNATURE instead of DEBUG
+- Simplify some error messages
+- Add test suite
+
 0.1.4 (2015-04-07)
 ++++++++++++++++++
 
