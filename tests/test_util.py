@@ -47,8 +47,9 @@ def test_bad_mapped_ips():
 def test_good_signatures():
     key = b'Some key'
     signatures = {
-        b'': 'sha1=82821338dd780c9d304011785fc164410a29363e',
-        b'hi': 'sha1=5e6d699dd7c8ca40c90d0daa910c5caddef89421',
+        b'': u'sha1=82821338dd780c9d304011785fc164410a29363e',
+        b'hi': u'sha1=5e6d699dd7c8ca40c90d0daa910c5caddef89421',
+        b'hi': b'sha1=5e6d699dd7c8ca40c90d0daa910c5caddef89421',
     }
     for d in signatures:
         assert check_signature(signatures[d], key, d) == True
@@ -57,11 +58,11 @@ def test_good_signatures():
 def test_bad_signatures():
     key = b'Some key'
     signatures = {
-        b'': '',
-        b'': 'sha1=',
-        b'123': 'sha1=',
-        b'abc': 'sha1=2346*%#!huteab',
-        b'do-re-mi': 'sha1=baby you and me',
+        b'': b'',
+        b'': u'sha1=',
+        b'123': b'sha1=',
+        b'abc': u'sha1=2346*%#!huteab',
+        b'do-re-mi': b'sha1=baby you and me',
     }
     for d in signatures:
         assert check_signature(signatures[d], key, d) == False

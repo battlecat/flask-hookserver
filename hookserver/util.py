@@ -55,7 +55,15 @@ def is_github_ip(ip_str):
 def check_signature(signature, key, data):
     """Compute the HMAC signature and test against a given hash."""
     digest = 'sha1=' + hmac.new(key, data, hashlib.sha1).hexdigest()
+
+    # Covert everything to byte sequences
+    if hasattr(digest, 'encode'):
+        digest = digest.encode('utf-8')
+    if hasattr(signature, 'encode'):
+        signature = signature.encode('utf-8')
+
     if not hasattr(hmac, 'compare_digest'):
         # Python 2.6 doesn't have hmac.compare_digest
         return werkzeug.security.safe_str_cmp(digest, signature)
+
     return hmac.compare_digest(digest, signature)
