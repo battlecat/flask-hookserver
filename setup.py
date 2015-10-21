@@ -20,7 +20,7 @@ with open('HISTORY.rst', 'r') as f:
 
 requirements = [
     'Flask>=0.10.1',
-    'requests>=2.3.0',
+    'requests[security]>=2.3.0',
     'Werkzeug>=0.9',
 ]
 if sys.version_info < (3, 3):
