@@ -39,8 +39,7 @@ def load_github_hooks():
 
 def is_github_ip(ip_str):
     """Verify that an IP address is owned by GitHub."""
-    # Python 2.x
-    if hasattr(str, 'decode'):
+    if hasattr(ip_str, 'decode'):
         ip_str = ip_str.decode('utf-8')
 
     ip = ipaddress.ip_address(ip_str)

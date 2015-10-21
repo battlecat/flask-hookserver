@@ -25,6 +25,11 @@ def test_correct_ip():
     assert is_github_ip('192.30.252.1') == True
 
 
+def test_ip_decoding():
+    assert is_github_ip(b'192.30.252.1') == True
+    assert is_github_ip(u'192.30.252.1') == True
+
+
 def test_mapped_ip():
     assert is_github_ip('::ffff:c01e:fc01') == True
 
