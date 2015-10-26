@@ -10,7 +10,7 @@ def test_500():
     app.config['VALIDATE_IP'] = False
     app.config['VALIDATE_SIGNATURE'] = False
 
-    @app.route('/error500'):
+    @app.route('/error500')
     def dividebyzero():
         1/0
 
