@@ -2,7 +2,10 @@ GitHub webhooks using Flask
 ###########################
 
 .. image:: https://img.shields.io/travis/nickfrostatx/flask-hookserver.svg
-        :target: https://travis-ci.org/nickfrostatx/flask-hookserver
+    :target: https://travis-ci.org/nickfrostatx/flask-hookserver
+
+.. image:: https://img.shields.io/coveralls/nickfrostatx/flask-hookserver.svg
+    :target: https://coveralls.io/github/nickfrostatx/flask-hookserver
 
 .. image:: https://img.shields.io/pypi/v/flask-hookserver.svg
     :target: https://pypi.python.org/pypi/flask-hookserver
