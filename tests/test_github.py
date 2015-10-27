@@ -13,7 +13,9 @@ import threading
 def serving_app(request):
     """Create a Flask app and serve it over 8080.
 
-    Destroy the server when the test ends.
+    This will be used to pretend to be GitHub, so we can see test what
+    happens when GitHub returns unexpected responses. When the test
+    ends, the server is destroyed.
     """
     app = Flask(__name__)
     server = ThreadedWSGIServer('127.0.0.1', 8080, app)
