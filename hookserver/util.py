@@ -26,9 +26,9 @@ class timed_memoize(object):
     def __call__(self, fn):
         """Create the wrapped function."""
         @wraps(fn)
-        def inner():
+        def inner(*args, **kwargs):
             if self.last is None or time() - self.last > self.timeout:
-                self.cache = fn()
+                self.cache = fn(*args, **kwargs)
                 self.last = time()
             return self.cache
         return inner
