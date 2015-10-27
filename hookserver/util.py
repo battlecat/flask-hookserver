@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
 """Some helper functions."""
 
-from datetime import datetime
-
 from functools import wraps
-from time import time
 from werkzeug.exceptions import ServiceUnavailable
 import hashlib
 import hmac
 import ipaddress
 import requests
+import time
 import werkzeug.security
 
 
@@ -31,9 +29,9 @@ class timed_memoize(object):
         """Create the wrapped function."""
         @wraps(fn)
         def inner(*args, **kwargs):
-            if self.last is None or time() - self.last > self.timeout:
+            if self.last is None or time.time() - self.last > self.timeout:
                 self.cache = fn(*args, **kwargs)
-                self.last = time()
+                self.last = time.time()
             return self.cache
         return inner
 
@@ -53,11 +51,12 @@ def _load_github_hooks(github_url='https://api.github.com'):
         if resp.status_code == 200:
             return resp.json()['hooks']
         else:
-            if resp.headers.get('X-RateLimit-Remaining') == 0:
+            if resp.headers.get('X-RateLimit-Remaining') == '0':
                 reset_ts = int(resp.headers['X-RateLimit-Reset'])
-                reset = datetime.fromtimestamp(reset_ts)
-                raise ServiceUnavailable('Rate limited from GitHub until {0}'
-                                         .format(reset))
+                reset_string = time.strftime('%a, %d %b %Y %H:%M:%S GMT',
+                                             time.gmtime(reset_ts))
+                raise ServiceUnavailable('Rate limited from GitHub until ' +
+                                         reset_string)
             else:
                 raise ServiceUnavailable('Error reaching GitHub')
     except (KeyError, ValueError, requests.exceptions.ConnectionError):
