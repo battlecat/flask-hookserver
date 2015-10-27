@@ -2,6 +2,7 @@
 """Some helper functions."""
 
 from datetime import datetime
+
 from functools import wraps
 from time import time
 from werkzeug.exceptions import ServiceUnavailable
@@ -34,7 +35,7 @@ class timed_memoize(object):
 
 
 @timed_memoize(60)  # So we don't get rate limited
-def load_github_hooks():
+def load_github_hooks(github_url='https://api.github.com'):
     """Request GitHub's IP block from their API.
 
     Return the IP network.
@@ -45,7 +46,7 @@ def load_github_hooks():
     If something else goes wrong, raise a generic 503.
     """
     try:
-        resp = requests.get('https://api.github.com/meta')
+        resp = requests.get(github_url + '/meta')
         if resp.status_code == 200:
             return resp.json()['hooks']
         else:
