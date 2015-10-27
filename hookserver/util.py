@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 """Some helper functions."""
 
+from datetime import datetime
 from functools import wraps
 from time import time
+from werkzeug.exceptions import ServiceUnavailable
 import hashlib
 import hmac
 import ipaddress
 import requests
-import werkzeug.exceptions
 import werkzeug.security
 
 
@@ -34,12 +35,29 @@ class timed_memoize(object):
 
 @timed_memoize(60)  # So we don't get rate limited
 def load_github_hooks():
-    """Request GitHub's IP block from their API."""
+    """Request GitHub's IP block from their API.
+
+    Return the IP network.
+
+    If we detect a rate-limit error, raise an error message stating when
+    the rate limit will reset.
+
+    If something else goes wrong, raise a generic 503.
+    """
     try:
-        return requests.get('https://api.github.com/meta').json()['hooks']
-    except KeyError:
-        # This should not happen if timed_memoize is working correctly
-        raise werkzeug.exceptions.ServiceUnavailable('Error reaching GitHub')
+        resp = requests.get('https://api.github.com/meta')
+        if resp.status_code == 200:
+            return resp.json()['hooks']
+        else:
+            if resp.headers.get('X-RateLimit-Remaining') == 0:
+                reset_ts = int(resp.headers['X-RateLimit-Reset'])
+                reset = datetime.fromtimestamp(reset_ts)
+                raise ServiceUnavailable('Rate limited from GitHub until {0}'
+                                         .format(reset))
+            else:
+                raise ServiceUnavailable('Error reaching GitHub')
+    except (KeyError, ValueError, requests.exceptions.ConnectionError):
+        raise ServiceUnavailable('Error reaching GitHub')
 
 
 def is_github_ip(ip_str):
