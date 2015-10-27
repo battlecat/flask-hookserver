@@ -15,7 +15,11 @@ import werkzeug.security
 
 class timed_memoize(object):
 
-    """Decorator that caches the value of an argumentless function."""
+    """Decorator that caches the value of function.
+
+    Does not care about arguments to the function, will still only cache
+    one value.
+    """
 
     def __init__(self, timeout):
         """Initialize with timeout in seconds."""
