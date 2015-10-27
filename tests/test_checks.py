@@ -26,12 +26,12 @@ def test_ipv4():
     assert rv.status_code == 404
 
     rv = client.post('/', headers={'X-Forwarded-For': '192.30.251.255'})
-    assert rv.status_code == 403
     assert b'Requests must originate from GitHub' in rv.data
+    assert rv.status_code == 403
 
     rv = client.post('/', headers={'X-Forwarded-For': '192.31.0.1'})
-    assert rv.status_code == 403
     assert b'Requests must originate from GitHub' in rv.data
+    assert rv.status_code == 403
 
 
 def test_num_proxies():
@@ -49,12 +49,12 @@ def test_ipv6():
     assert rv.status_code == 404
 
     rv = client.post('/', headers={'X-Forwarded-For': '::ffff:c01e:fbff'})
-    assert rv.status_code == 403
     assert b'Requests must originate from GitHub' in rv.data
+    assert rv.status_code == 403
 
     rv = client.post('/', headers={'X-Forwarded-For': '::ffff:c01f:1'})
-    assert rv.status_code == 403
     assert b'Requests must originate from GitHub' in rv.data
+    assert rv.status_code == 403
 
 
 def test_ignore_ip():
@@ -77,8 +77,8 @@ def test_signature():
     client = app.test_client()
 
     rv = client.post('/', data='{}', content_type='application/json')
-    assert rv.status_code == 400
     assert b'Missing signature' in rv.data
+    assert rv.status_code == 400
 
     headers = {
         'X-Hub-Signature': 'sha1=e1590250fd7dd7882185062d1ade5bef8cb4319c',
@@ -92,8 +92,8 @@ def test_signature():
     }
     rv = client.post('/',  content_type='application/json', data='{}',
                      headers=headers)
-    assert rv.status_code == 400
     assert b'Wrong signature' in rv.data
+    assert rv.status_code == 400
 
 
 def test_ignore_signature():
