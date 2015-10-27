@@ -38,8 +38,7 @@ class timed_memoize(object):
         return inner
 
 
-@timed_memoize(60)  # So we don't get rate limited
-def load_github_hooks(github_url='https://api.github.com'):
+def _load_github_hooks(github_url='https://api.github.com'):
     """Request GitHub's IP block from their API.
 
     Return the IP network.
@@ -63,6 +62,10 @@ def load_github_hooks(github_url='https://api.github.com'):
                 raise ServiceUnavailable('Error reaching GitHub')
     except (KeyError, ValueError, requests.exceptions.ConnectionError):
         raise ServiceUnavailable('Error reaching GitHub')
+
+
+# So we don't get rate limited
+load_github_hooks = timed_memoize(60)(_load_github_hooks)
 
 
 def is_github_ip(ip_str):
