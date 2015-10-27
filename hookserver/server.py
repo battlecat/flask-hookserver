@@ -49,7 +49,7 @@ class HookServer(Flask):
                 msg = e.description
                 status = e.code
             else:
-                msg = 'Internal server error'
+                msg = 'Internal Server Error'
                 status = 500
             return msg + '\n', status
 
