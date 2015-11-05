@@ -55,13 +55,13 @@ class HookServer(Flask):
 
         @self.before_request
         def validate_ip():
-            if self.config['VALIDATE_IP']:
+            if self.config['VALIDATE_IP'] and request.path == url:
                 if not is_github_ip(request.remote_addr):
                     raise Forbidden('Requests must originate from GitHub')
 
         @self.before_request
         def validate_signature():
-            if self.config['VALIDATE_SIGNATURE']:
+            if self.config['VALIDATE_SIGNATURE'] and request.path == url:
                 key = self.config['KEY']
                 signature = request.headers.get('X-Hub-Signature')
                 data = request.get_data()

@@ -25,11 +25,14 @@ def test_ipv4():
     rv = client.post('/', headers={'X-Forwarded-For': '192.30.252.1'})
     assert rv.status_code == 404
 
-    rv = client.post('/', headers={'X-Forwarded-For': '192.30.251.255'})
+    rv = client.post('/hooks', headers={'X-Forwarded-For': '192.30.252.1'})
+    assert rv.status_code == 400
+
+    rv = client.post('/hooks', headers={'X-Forwarded-For': '192.30.251.255'})
     assert b'Requests must originate from GitHub' in rv.data
     assert rv.status_code == 403
 
-    rv = client.post('/', headers={'X-Forwarded-For': '192.31.0.1'})
+    rv = client.post('/hooks', headers={'X-Forwarded-For': '192.31.0.1'})
     assert b'Requests must originate from GitHub' in rv.data
     assert rv.status_code == 403
 
@@ -48,11 +51,14 @@ def test_ipv6():
     rv = client.post('/', headers={'X-Forwarded-For': '::ffff:c01e:fc01'})
     assert rv.status_code == 404
 
-    rv = client.post('/', headers={'X-Forwarded-For': '::ffff:c01e:fbff'})
+    rv = client.post('/hooks', headers={'X-Forwarded-For': '::ffff:c01e:fc01'})
+    assert rv.status_code == 400
+
+    rv = client.post('/hooks', headers={'X-Forwarded-For': '::ffff:c01e:fbff'})
     assert b'Requests must originate from GitHub' in rv.data
     assert rv.status_code == 403
 
-    rv = client.post('/', headers={'X-Forwarded-For': '::ffff:c01f:1'})
+    rv = client.post('/hooks', headers={'X-Forwarded-For': '::ffff:c01f:1'})
     assert b'Requests must originate from GitHub' in rv.data
     assert rv.status_code == 403
 
@@ -76,21 +82,21 @@ def test_signature():
     app.config['VALIDATE_SIGNATURE'] = True
     client = app.test_client()
 
-    rv = client.post('/', data='{}', content_type='application/json')
+    rv = client.post('/hooks', data='{}', content_type='application/json')
     assert b'Missing signature' in rv.data
     assert rv.status_code == 400
 
     headers = {
         'X-Hub-Signature': 'sha1=e1590250fd7dd7882185062d1ade5bef8cb4319c',
     }
-    rv = client.post('/', data='{}', content_type='application/json',
+    rv = client.post('/hooks', data='{}', content_type='application/json',
                      headers=headers)
-    assert rv.status_code == 404
+    assert rv.status_code == 400
 
     headers = {
         'X-Hub-Signature': 'sha1=abc',
     }
-    rv = client.post('/',  content_type='application/json', data='{}',
+    rv = client.post('/hooks', content_type='application/json', data='{}',
                      headers=headers)
     assert b'Wrong signature' in rv.data
     assert rv.status_code == 400
@@ -186,3 +192,26 @@ def test_missing_hook_data(nocheck):
                      headers=headers)
     assert b'The browser' in rv.data
     assert rv.status_code == 400
+
+
+def test_other_routes():
+    app = hookserver.HookServer(__name__, num_proxies=1)
+    app.config['VALIDATE_IP'] = True
+    app.config['VALIDATE_SIGNATURE'] = False
+    client = app.test_client()
+
+    @app.route('/other')
+    def other():
+        return 'other'
+
+    rv = client.get('/other', headers={'X-Forwarded-For': '192.30.252.1'})
+    assert rv.status_code == 200
+    assert b'other' in rv.data
+
+    rv = client.post('/hooks', headers={'X-Forwarded-For': '192.30.252.1'})
+    assert rv.status_code == 400
+    assert b'other' not in rv.data
+
+    rv = client.post('/hooks', headers={'X-Forwarded-For': '192.30.251.255'})
+    assert rv.status_code == 403
+    assert b'other' not in rv.data
