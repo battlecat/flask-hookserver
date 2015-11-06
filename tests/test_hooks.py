@@ -27,8 +27,8 @@ def post(client, hook, data, guid='abc'):
 def test_hook_not_used(app):
     client = app.test_client()
     rv = post(client, 'ping', {})
-    assert rv.status_code == 200
     assert b'Hook not used'
+    assert rv.status_code == 200
 
 
 def test_ping(app):
@@ -39,8 +39,8 @@ def test_ping(app):
 
     client = app.test_client()
     rv = post(client, 'ping', {})
-    assert rv.status_code == 200
     assert b'pong' in rv.data
+    assert rv.status_code == 200
 
 
 def test_guid(app):
@@ -51,8 +51,8 @@ def test_guid(app):
 
     client = app.test_client()
     rv = post(client, 'push', {}, guid='abcdef')
-    assert rv.status_code == 200
     assert b'GUID: abcdef' in rv.data
+    assert rv.status_code == 200
 
 
 def test_too_many_hooks(app):
