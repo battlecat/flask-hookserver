@@ -205,13 +205,13 @@ def test_other_routes():
         return 'other'
 
     rv = client.get('/other', headers={'X-Forwarded-For': '192.30.252.1'})
-    assert rv.status_code == 200
     assert b'other' in rv.data
+    assert rv.status_code == 200
 
     rv = client.post('/hooks', headers={'X-Forwarded-For': '192.30.252.1'})
-    assert rv.status_code == 400
     assert b'other' not in rv.data
+    assert rv.status_code == 400
 
     rv = client.post('/hooks', headers={'X-Forwarded-For': '192.30.251.255'})
-    assert rv.status_code == 403
     assert b'other' not in rv.data
+    assert rv.status_code == 403
