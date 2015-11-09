@@ -3,6 +3,12 @@
 History
 -------
 
+0.3.0 (2015-11-08)
+++++++++++++++++++
+
+- Move hooks URL route into a blueprint
+- Report rate limit expire time when the GitHub request limit is exceeded
+
 0.2.1 (2015-10-21)
 ++++++++++++++++++
 
