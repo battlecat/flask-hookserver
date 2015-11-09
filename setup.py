@@ -39,7 +39,7 @@ setup(
     install_requires=requirements,
     keywords=['github', 'webhooks', 'flask'],
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Framework :: Flask',
         'Intended Audience :: Developers',
         'Intended Audience :: System Administrators',
