@@ -22,7 +22,7 @@ originating IP address comes from the GitHub IP block.
 Installation
 ------------
 
-.. code-block:: bash
+.. code-block:: shell
 
     $ pip install flask-hookserver
 
