@@ -34,13 +34,13 @@ class HookRoutes(Blueprint):
 
         @self.before_request
         def validate_ip():
-            if current_app.config['VALIDATE_IP']:
+            if current_app.config.get('VALIDATE_IP', True):
                 if not is_github_ip(request.remote_addr):
                     raise Forbidden('Requests must originate from GitHub')
 
         @self.before_request
         def validate_signature():
-            if current_app.config['VALIDATE_SIGNATURE']:
+            if current_app.config.get('VALIDATE_SIGNATURE', True):
                 key = current_app.config['KEY']
                 signature = request.headers.get('X-Hub-Signature')
                 data = request.get_data()

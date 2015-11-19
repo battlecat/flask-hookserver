@@ -26,8 +26,8 @@ class HookServer(Flask):
             self.wsgi_app = ProxyFix(self.wsgi_app, num_proxies=num_proxies)
 
         self.config['KEY'] = key
-        self.config['VALIDATE_IP'] = True
-        self.config['VALIDATE_SIGNATURE'] = True
+        self.config.setdefault('VALIDATE_IP', True)
+        self.config.setdefault('VALIDATE_SIGNATURE', True)
 
         self._blueprint = HookRoutes('hooks', import_name, url)
         self.register_blueprint(self._blueprint)
