@@ -3,6 +3,12 @@
 History
 -------
 
+0.3.1 (2015-11-19)
+++++++++++++++++++
+
+- Accept unicode keys
+- Default to true for VALIDATE_IP and VALIDATE_SIGNATURE if missing
+
 0.3.0 (2015-11-08)
 ++++++++++++++++++
 
