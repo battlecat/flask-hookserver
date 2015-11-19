@@ -84,12 +84,15 @@ def is_github_ip(ip_str):
 
 def check_signature(signature, key, data):
     """Compute the HMAC signature and test against a given hash."""
+    if hasattr(key, 'encode'):
+        key = key.encode()
+
     digest = 'sha1=' + hmac.new(key, data, hashlib.sha1).hexdigest()
 
     # Covert everything to byte sequences
     if hasattr(digest, 'encode'):
-        digest = digest.encode('utf-8')
+        digest = digest.encode()
     if hasattr(signature, 'encode'):
-        signature = signature.encode('utf-8')
+        signature = signature.encode()
 
     return werkzeug.security.safe_str_cmp(digest, signature)

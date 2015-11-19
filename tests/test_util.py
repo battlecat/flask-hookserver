@@ -55,6 +55,13 @@ def test_good_signatures():
         assert check_signature(signatures[d], key, d) == True
 
 
+def test_unicode_key():
+    key = u'Some key'
+    data = b'hi'
+    check = u'sha1=5e6d699dd7c8ca40c90d0daa910c5caddef89421'
+    assert check_signature(check, key, data)
+
+
 def test_bad_signatures():
     key = b'Some key'
     signatures = {
