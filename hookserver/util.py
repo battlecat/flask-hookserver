@@ -70,7 +70,7 @@ load_github_hooks = timed_memoize(60)(_load_github_hooks)
 def is_github_ip(ip_str):
     """Verify that an IP address is owned by GitHub."""
     if hasattr(ip_str, 'decode'):
-        ip_str = ip_str.decode('utf-8')
+        ip_str = ip_str.decode()
 
     ip = ipaddress.ip_address(ip_str)
     if ip.version == 6 and ip.ipv4_mapped:
