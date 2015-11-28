@@ -197,7 +197,7 @@ def test_missing_hook_data(nocheck):
     }
     rv = client.post('/hooks', content_type='application/json', data='',
                      headers=headers)
-    assert b'The browser' in rv.data
+    assert b'Missing' not in rv.data
     assert rv.status_code == 400
 
 
