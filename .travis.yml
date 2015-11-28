@@ -1,16 +1,20 @@
 language: python
-
 python:
-  - '3.5'
-
+- '3.5'
 env:
-  - TOXENV=py35,coveralls
-  - TOXENV=py34,coveralls
-  - TOXENV=py33,coveralls
-  - TOXENV=py27,coveralls
-  - TOXENV=py26,coveralls
-
+- TOXENV=py35,coveralls
+- TOXENV=py34,coveralls
+- TOXENV=py33,coveralls
+- TOXENV=py27,coveralls
+- TOXENV=py26,coveralls
 install:
-  - pip install tox
-
+- pip install tox
 script: tox
+deploy:
+  provider: pypi
+  user: nickfrostatx
+  password:
+    secure: M5fHi/mpjR5SqzTOPayLC+UdOz1k1QFMPZH7FWzvHDw53YYlsB4rpxxjMCes4gFd9wdG8xh/7Ltd9XnRebvyZlcW1hZDr8c1+5kbL2XnvB46exemLRpIpc6pjJbJ1qqmP7hcd+1e38UpAGZTGSZCbcqxpl1dONaFZwmwIxE4eqk=
+  distributions: sdist bdist_wheel
+  on:
+    tags: true
