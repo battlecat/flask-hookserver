@@ -10,7 +10,7 @@ import pytest
 def override_github(monkeypatch):
     """Prevent an actual request to GitHub."""
     monkeypatch.setattr('hookserver.util.load_github_hooks',
-                        lambda: ['192.30.252.0/22'])
+                        lambda: [u'192.30.252.0/22'])
 
 
 def test_timed_memoize():
