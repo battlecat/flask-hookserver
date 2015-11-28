@@ -3,6 +3,14 @@
 
 from hookserver.util import timed_memoize, is_github_ip, check_signature
 from time import sleep, time
+import pytest
+
+
+@pytest.fixture(autouse=True)
+def override_github(monkeypatch):
+    """Prevent an actual request to GitHub."""
+    monkeypatch.setattr('hookserver.util.load_github_hooks',
+                        lambda: ['192.30.252.0/22'])
 
 
 def test_timed_memoize():

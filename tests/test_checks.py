@@ -15,6 +15,13 @@ def nocheck():
     return app.test_client()
 
 
+@pytest.fixture(autouse=True)
+def override_github(monkeypatch):
+    """Prevent an actual request to GitHub."""
+    monkeypatch.setattr('hookserver.util.load_github_hooks',
+                        lambda: ['192.30.252.0/22'])
+
+
 def test_ipv4():
     """Make sure it returns a 404 instead of 403"""
     app = hookserver.HookServer(__name__, num_proxies=1)
