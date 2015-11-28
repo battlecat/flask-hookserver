@@ -7,7 +7,7 @@ import pytest
 
 @pytest.fixture
 def nocheck():
-    """Test client for an app that ignores the IP and signature"""
+    """Test client for an app that ignores the IP and signature."""
     app = hookserver.HookServer(__name__)
     app.config['DEBUG'] = True
     app.config['VALIDATE_IP'] = False
@@ -23,7 +23,7 @@ def override_github(monkeypatch):
 
 
 def test_ipv4():
-    """Make sure it returns a 404 instead of 403"""
+    """Make sure it returns a 404 instead of 403."""
     app = hookserver.HookServer(__name__, num_proxies=1)
     app.config['VALIDATE_IP'] = True
     app.config['VALIDATE_SIGNATURE'] = False
