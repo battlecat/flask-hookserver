@@ -3,6 +3,12 @@
 History
 -------
 
+0.3.2 (2015-11-28)
+++++++++++++++++++
+
+- Don't actually connect to GitHub from test suite
+- Deploy to PyPI from Travis
+
 0.3.1 (2015-11-19)
 ++++++++++++++++++
 
