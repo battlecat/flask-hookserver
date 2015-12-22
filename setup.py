@@ -27,7 +27,7 @@ if sys.version_info < (3, 3):
     requirements.append('ipaddress>=1.0.6')
 
 setup(
-    name='flask-hookserver',
+    name='Flask-Hookserver',
     version=version,
     url='https://github.com/nickfrostatx/flask-hookserver',
     author='Nick Frost',

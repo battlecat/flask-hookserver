@@ -1,4 +1,4 @@
-flask-hookserver
+Flask-Hookserver
 ================
 
 .. image:: https://img.shields.io/travis/nickfrostatx/flask-hookserver.svg
@@ -24,7 +24,7 @@ Installation
 
 .. code-block:: bash
 
-    $ pip install flask-hookserver
+    $ pip install Flask-Hookserver
 
 Usage
 -----
