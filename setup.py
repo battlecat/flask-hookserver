@@ -7,7 +7,7 @@ import sys
 
 version = ''
 with open('hookserver/__init__.py') as f:
-    version = re.search(r'__version__\s*=\s*\'([\d.]+)\'', f.read()).group(1)
+    version = re.search(r'__version__\s*=\s*\'(.+)\'', f.read()).group(1)
 
 if not version:
     raise RuntimeError('Couldn\'t find version string')

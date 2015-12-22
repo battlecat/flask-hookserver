@@ -3,6 +3,12 @@
 History
 -------
 
+1.0.0 (??????????)
+++++++++++++++++++
+
+- Refactor into a proper Flask extension
+- This is a breaking change
+
 0.3.2 (2015-11-28)
 ++++++++++++++++++
 

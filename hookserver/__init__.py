@@ -10,5 +10,5 @@ from .blueprint import HookRoutes
 from .server import HookServer
 
 __author__ = 'Nick Frost'
-__version__ = '0.3.2'
+__version__ = '1.0.dev0'
 __license__ = 'MIT'
