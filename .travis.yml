@@ -1,9 +1,9 @@
 language: python
 matrix:
   include:
-  - python: 3.5-dev
+  - python: 3.5
     env: TOXENV=py35,coveralls
-  - python: 3.5-dev
+  - python: 3.5
     env: TOXENV=py35-devel
   - python: 3.4
     env: TOXENV=py34
