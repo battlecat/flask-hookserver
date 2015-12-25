@@ -13,7 +13,7 @@ Flask-Hookserver
 .. image:: https://img.shields.io/pypi/l/flask-hookserver.svg
     :target: https://raw.githubusercontent.com/nickfrostatx/flask-hookserver/master/LICENSE
 
-GitHub webhooks using Flask.
+> GitHub webhooks using Flask.
 
 This tool receives webhooks from GitHub and passes the data along to a
 user-defined function. It validates the HMAC signature, and checks that the
@@ -66,5 +66,11 @@ in ``app.config['GITHUB_WEBHOOKS_KEY']``.
 Exceptions
 ----------
 
-If anything goes wrong, a regular ``HTTPException`` will be raised. You have
-been warned.
+If anything goes wrong, a regular ``HTTPException`` will be raised. Possible
+errors include:
+
+- 400: Some headers are missing
+- 400: The request body isn't valid JSON
+- 400: The signature is missing or incorrect
+- 403: The request originated from an invalid IP address
+- 503: Could not download the valid webhooks IP block from GitHub
