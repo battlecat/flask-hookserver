@@ -35,7 +35,7 @@ Usage
     from flask.ext.hookserver import Hooks
 
     app = Flask(__name__)
-    app.config['GITHUB_WEBHOOKS_KEY'] = b'my_secret_key'
+    app.config['GITHUB_WEBHOOKS_KEY'] = 'my_secret_key'
 
     hooks = Hooks(app, url='/hooks')
 
