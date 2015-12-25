@@ -44,7 +44,7 @@ class Hooks(object):
 
                 if hasattr(request, 'get_data'):
                     # Werkzeug >= 0.9
-                    payload = request.get_gata()
+                    payload = request.get_data()
                 else:
                     payload = request.data
 
