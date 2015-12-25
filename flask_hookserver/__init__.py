@@ -9,5 +9,5 @@ Flask-Hookserver: GitHub webhooks using Flask.
 from .hooks import Hooks
 
 __author__ = 'Nick Frost'
-__version__ = '1.0.0'
+__version__ = '1.0.dev0'
 __license__ = 'MIT'
