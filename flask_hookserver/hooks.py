@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
-"""Contains the main Flask app."""
+"""This module contains the main extension object."""
 
 from flask import Blueprint, current_app, request
 from werkzeug.exceptions import BadRequest, Forbidden
 from .util import is_github_ip, check_signature
 
 
-class HookRoutes(Blueprint):
+class Hooks(object):
 
-    """Blueprint containing hooks.
+    """Main extension class.
 
-    Here is the flow for each post request:
+    The flow of each post request
      - If VALIDATE_IP is set, see if the source IP address comes from
        the GitHub IP block (err 403)
      - if VALIDATE_SIGNATURE is set, compute the HMAC signature and
@@ -21,27 +21,25 @@ class HookRoutes(Blueprint):
        provided data
     """
 
-    def __init__(self, name='hooks', import_name=__name__, url='/hooks', **kw):
-        """Set up the blueprint.
-
-        - Parent constructor
-        - Add pre-request hooks
-        - Add main URL route
-        """
-        Blueprint.__init__(self, name, import_name, **kw)
-
+    def __init__(self, app=None, **kwargs):
+        """Optionally, initialize the app."""
         self._hooks = {}
+        if app is not None:
+            self.init_app(app, **kwargs)
 
-        @self.before_request
-        def validate_ip():
-            if current_app.config.get('VALIDATE_IP', True):
+    def init_app(self, app, url='/hooks'):
+        """Register the URL route to the application."""
+        app.config.setdefault('VALIDATE_IP', True)
+        app.config.setdefault('VALIDATE_SIGNATURE', True)
+
+        @app.route(url, methods=['POST'])
+        def hook():
+            if app.config['VALIDATE_IP']:
                 if not is_github_ip(request.remote_addr):
                     raise Forbidden('Requests must originate from GitHub')
 
-        @self.before_request
-        def validate_signature():
-            if current_app.config.get('VALIDATE_SIGNATURE', True):
-                key = current_app.config['KEY']
+            if app.config['VALIDATE_SIGNATURE']:
+                key = current_app.config['GITHUB_WEBHOOKS_KEY']
                 signature = request.headers.get('X-Hub-Signature')
                 data = request.get_data()
 
@@ -51,16 +49,14 @@ class HookRoutes(Blueprint):
                 if not check_signature(signature, key, data):
                     raise BadRequest('Wrong signature')
 
-        @self.route(url, methods=['POST'])
-        def hook():
-            event = request.headers.get('X-GitHub-Event', None)
-            guid = request.headers.get('X-GitHub-Delivery', None)
-            data = request.get_json()
+            event = request.headers.get('X-GitHub-Event')
+            guid = request.headers.get('X-GitHub-Delivery')
+            if not event:
+                raise BadRequest('Missing header: X-GitHub-Event')
+            elif not guid:
+                raise BadRequest('Missing header: X-GitHub-Delivery')
 
-            if event is None:
-                raise BadRequest('Missing event')
-            elif guid is None:
-                raise BadRequest('Missing GUID')
+            data = request.get_json()
 
             if event in self._hooks:
                 return self._hooks[event](data, guid)

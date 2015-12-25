@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """Test utility functions used for request validation."""
 
-from hookserver.util import timed_memoize, is_github_ip, check_signature
+from flask.ext.hookserver.util import timed_memoize, is_github_ip, \
+                                      check_signature
 from time import sleep, time
 import pytest
 
@@ -9,7 +10,7 @@ import pytest
 @pytest.fixture(autouse=True)
 def override_github(monkeypatch):
     """Prevent an actual request to GitHub."""
-    monkeypatch.setattr('hookserver.util.load_github_hooks',
+    monkeypatch.setattr('flask.ext.hookserver.util.load_github_hooks',
                         lambda: [u'192.30.252.0/22'])
 
 

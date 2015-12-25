@@ -1,5 +1,5 @@
 test:
-	py.test -vv --pep8 --pep257 --cov=hookserver --cov-report=term-missing
+	py.test -vv --pep8 --pep257 --cov=flask_hookserver --cov-report=term-missing
 
 publish:
 	python setup.py register

@@ -6,8 +6,7 @@ Flask-Hookserver: GitHub webhooks using Flask.
 :license: MIT, see LICENSE for more details.
 """
 
-from .blueprint import HookRoutes
-from .server import HookServer
+from .hooks import Hooks
 
 __author__ = 'Nick Frost'
 __version__ = '1.0.dev0'

@@ -6,7 +6,7 @@ import re
 import sys
 
 version = ''
-with open('hookserver/__init__.py') as f:
+with open('flask_hookserver/__init__.py') as f:
     version = re.search(r'__version__\s*=\s*\'(.+)\'', f.read()).group(1)
 
 if not version:
@@ -35,7 +35,7 @@ setup(
     description='Server for GitHub webhooks using Flask',
     long_description=readme + '\n\n' + history,
     license='MIT',
-    packages=['hookserver'],
+    packages=['flask_hookserver'],
     install_requires=requirements,
     keywords=['github', 'webhooks', 'flask'],
     classifiers=[

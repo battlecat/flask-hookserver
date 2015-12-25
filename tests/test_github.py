@@ -2,7 +2,7 @@
 """Test app error handling."""
 
 from flask import Flask, jsonify
-from hookserver.util import _load_github_hooks
+from flask.ext.hookserver.util import _load_github_hooks
 from random import randint
 from werkzeug.exceptions import ServiceUnavailable
 from werkzeug.serving import ThreadedWSGIServer

@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 """Test hook routing."""
 
-import hookserver
+from flask.ext.hookserver import Hooks
+import flask
 import pytest
 import json
 
 
 @pytest.fixture
 def app():
-    server = hookserver.HookServer(__name__)
+    server = flask.Flask(__name__)
     server.config['DEBUG'] = True
     server.config['VALIDATE_IP'] = False
     server.config['VALIDATE_SIGNATURE'] = False
@@ -25,44 +26,49 @@ def post(client, hook, data, guid='abc'):
 
 
 def test_hook_not_used(app):
-    client = app.test_client()
-    rv = post(client, 'ping', {})
-    assert b'Hook not used'
-    assert rv.status_code == 200
+    Hooks(app)
+
+    with app.test_client() as client:
+        rv = post(client, 'ping', {})
+        assert b'Hook not used'
+        assert rv.status_code == 200
 
 
 def test_ping(app):
+    hooks = Hooks(app)
 
-    @app.hook('ping')
+    @hooks.hook('ping')
     def pong(data, guid):
         return 'pong'
 
-    client = app.test_client()
-    rv = post(client, 'ping', {})
-    assert b'pong' in rv.data
-    assert rv.status_code == 200
+    with app.test_client() as client:
+        rv = post(client, 'ping', {})
+        assert b'pong' in rv.data
+        assert rv.status_code == 200
 
 
 def test_guid(app):
+    hooks = Hooks(app)
 
-    @app.hook('push')
+    @hooks.hook('push')
     def pong(data, guid):
         return 'GUID: ' + guid
 
-    client = app.test_client()
-    rv = post(client, 'push', {}, guid='abcdef')
-    assert b'GUID: abcdef' in rv.data
-    assert rv.status_code == 200
+    with app.test_client() as client:
+        rv = post(client, 'push', {}, guid='abcdef')
+        assert b'GUID: abcdef' in rv.data
+        assert rv.status_code == 200
 
 
 def test_too_many_hooks(app):
+    hooks = Hooks(app)
 
-    @app.hook('ping')
+    @hooks.hook('ping')
     def pong(data, guid):
         return 'pong'
 
     with pytest.raises(Exception) as e:
-        @app.hook('ping')
+        @hooks.hook('ping')
         def pong2():
             return 'another pong'
     assert 'ping hook already registered' in str(e)

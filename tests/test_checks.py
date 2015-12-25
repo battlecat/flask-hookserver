@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
 """Test the checks that must pass for a request to go through."""
 
-import hookserver
+from flask.ext.hookserver import Hooks
+from werkzeug.contrib.fixers import ProxyFix
+import flask
 import pytest
 
 
 @pytest.fixture
 def nocheck():
     """Test client for an app that ignores the IP and signature."""
-    app = hookserver.HookServer(__name__)
+    app = flask.Flask(__name__)
     app.config['DEBUG'] = True
     app.config['VALIDATE_IP'] = False
     app.config['VALIDATE_SIGNATURE'] = False
@@ -18,13 +20,20 @@ def nocheck():
 @pytest.fixture(autouse=True)
 def override_github(monkeypatch):
     """Prevent an actual request to GitHub."""
-    monkeypatch.setattr('hookserver.util.load_github_hooks',
+    monkeypatch.setattr('flask.ext.hookserver.util.load_github_hooks',
                         lambda: [u'192.30.252.0/22'])
 
 
-def test_ipv4():
-    """Make sure it returns a 404 instead of 403."""
-    app = hookserver.HookServer(__name__, num_proxies=1)
+@pytest.fixture
+def app():
+    app = flask.Flask(__name__)
+    app.config['DEBUG'] = True
+    Hooks(app)
+    return app
+
+
+def test_ipv4(app):
+    app.wsgi_app = ProxyFix(app.wsgi_app)
     app.config['VALIDATE_IP'] = True
     app.config['VALIDATE_SIGNATURE'] = False
     client = app.test_client()
@@ -44,13 +53,8 @@ def test_ipv4():
     assert rv.status_code == 403
 
 
-def test_num_proxies():
-    app = hookserver.HookServer(__name__, num_proxies=2)
-    assert app.wsgi_app.__class__.__name__ == 'ProxyFix'
-
-
-def test_ipv6():
-    app = hookserver.HookServer(__name__, num_proxies=1)
+def test_ipv6(app):
+    app.wsgi_app = ProxyFix(app.wsgi_app)
     app.config['VALIDATE_IP'] = True
     app.config['VALIDATE_SIGNATURE'] = False
     client = app.test_client()
@@ -70,8 +74,8 @@ def test_ipv6():
     assert rv.status_code == 403
 
 
-def test_ignore_ip():
-    app = hookserver.HookServer(__name__, num_proxies=1)
+def test_ignore_ip(app):
+    app.wsgi_app = ProxyFix(app.wsgi_app)
     app.config['VALIDATE_IP'] = False
     app.config['VALIDATE_SIGNATURE'] = False
     client = app.test_client()
@@ -83,8 +87,8 @@ def test_ignore_ip():
     assert rv.status_code == 404
 
 
-def test_signature():
-    app = hookserver.HookServer(__name__, b'Some key')
+def test_signature(app):
+    app.config['GITHUB_WEBHOOKS_KEY'] = b'Some key'
     app.config['VALIDATE_IP'] = False
     app.config['VALIDATE_SIGNATURE'] = True
     client = app.test_client()
@@ -109,8 +113,7 @@ def test_signature():
     assert rv.status_code == 400
 
 
-def test_ignore_signature():
-    app = hookserver.HookServer(__name__)
+def test_ignore_signature(app):
     app.config['VALIDATE_IP'] = False
     app.config['VALIDATE_SIGNATURE'] = False
     client = app.test_client()
@@ -126,8 +129,9 @@ def test_ignore_signature():
     assert rv.status_code == 404
 
 
-def test_all_checks():
-    app = hookserver.HookServer(__name__, b'Some key', num_proxies=1)
+def test_all_checks(app):
+    app.wsgi_app = ProxyFix(app.wsgi_app)
+    app.config['GITHUB_WEBHOOKS_KEY'] = b'Some key'
     app.config['VALIDATE_IP'] = True
     app.config['VALIDATE_SIGNATURE'] = True
     client = app.test_client()
@@ -144,15 +148,11 @@ def test_all_checks():
     assert rv.status_code == 200
 
 
-def test_bad_method(nocheck):
-    client = nocheck
-
-    rv = client.get('/hooks')
-    assert rv.status_code == 405
-
-
 def test_different_url():
-    app = hookserver.HookServer(__name__, url='/some_url')
+    app = flask.Flask(__name__)
+    app.config['DEBUG'] = True
+    Hooks(app, url='/some_url')
+
     app.config['VALIDATE_IP'] = False
     app.config['VALIDATE_SIGNATURE'] = False
     client = app.test_client()
@@ -169,8 +169,10 @@ def test_different_url():
     assert rv.status_code == 404
 
 
-def test_missing_hook_data(nocheck):
-    client = nocheck
+def test_missing_hook_data(app):
+    app.config['VALIDATE_IP'] = False
+    app.config['VALIDATE_SIGNATURE'] = False
+    client = app.test_client()
 
     rv = client.post('/hooks')
     headers = {
@@ -178,7 +180,7 @@ def test_missing_hook_data(nocheck):
     }
     rv = client.post('/hooks', content_type='application/json', data='{}',
                      headers=headers)
-    assert b'Missing event' in rv.data
+    assert b'Missing header: X-GitHub-Event' in rv.data
     assert rv.status_code == 400
 
     rv = client.post('/hooks')
@@ -187,7 +189,7 @@ def test_missing_hook_data(nocheck):
     }
     rv = client.post('/hooks', content_type='application/json', data='{}',
                      headers=headers)
-    assert b'Missing GUID' in rv.data
+    assert b'Missing header: X-GitHub-Delivery' in rv.data
     assert rv.status_code == 400
 
     rv = client.post('/hooks')
@@ -199,26 +201,3 @@ def test_missing_hook_data(nocheck):
                      headers=headers)
     assert b'Missing' not in rv.data
     assert rv.status_code == 400
-
-
-def test_other_routes():
-    app = hookserver.HookServer(__name__, num_proxies=1)
-    app.config['VALIDATE_IP'] = True
-    app.config['VALIDATE_SIGNATURE'] = False
-    client = app.test_client()
-
-    @app.route('/other')
-    def other():
-        return 'other'
-
-    rv = client.get('/other', headers={'X-Forwarded-For': '192.30.252.1'})
-    assert b'other' in rv.data
-    assert rv.status_code == 200
-
-    rv = client.post('/hooks', headers={'X-Forwarded-For': '192.30.252.1'})
-    assert b'other' not in rv.data
-    assert rv.status_code == 400
-
-    rv = client.post('/hooks', headers={'X-Forwarded-For': '192.30.251.255'})
-    assert b'other' not in rv.data
-    assert rv.status_code == 403
