@@ -69,7 +69,7 @@ load_github_hooks = timed_memoize(60)(_load_github_hooks)
 
 def is_github_ip(ip_str):
     """Verify that an IP address is owned by GitHub."""
-    if hasattr(ip_str, 'decode'):
+    if isinstance(ip_str, bytes):
         ip_str = ip_str.decode()
 
     ip = ipaddress.ip_address(ip_str)
@@ -84,15 +84,15 @@ def is_github_ip(ip_str):
 
 def check_signature(signature, key, data):
     """Compute the HMAC signature and test against a given hash."""
-    if hasattr(key, 'encode'):
+    if isinstance(key, type(u'')):
         key = key.encode()
 
     digest = 'sha1=' + hmac.new(key, data, hashlib.sha1).hexdigest()
 
     # Covert everything to byte sequences
-    if hasattr(digest, 'encode'):
+    if isinstance(digest, type(u'')):
         digest = digest.encode()
-    if hasattr(signature, 'encode'):
+    if isinstance(signature, type(u'')):
         signature = signature.encode()
 
     return werkzeug.security.safe_str_cmp(digest, signature)
