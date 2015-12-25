@@ -20,7 +20,8 @@ def nocheck():
 @pytest.fixture(autouse=True)
 def override_github(monkeypatch):
     """Prevent an actual request to GitHub."""
-    monkeypatch.setattr('flask.ext.hookserver.util.load_github_hooks',
+    monkeypatch.delattr('requests.sessions.Session.request')
+    monkeypatch.setattr('flask_hookserver.util.load_github_hooks',
                         lambda: [u'192.30.252.0/22'])
 
 
