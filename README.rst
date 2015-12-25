@@ -13,7 +13,7 @@ Flask-Hookserver
 .. image:: https://img.shields.io/pypi/l/flask-hookserver.svg
     :target: https://raw.githubusercontent.com/nickfrostatx/flask-hookserver/master/LICENSE
 
-: GitHub webhooks using Flask.
+    > GitHub webhooks using Flask.
 
 This tool receives webhooks from GitHub and passes the data along to a
 user-defined function. It validates the HMAC signature, and checks that the
