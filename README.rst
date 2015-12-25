@@ -19,6 +19,8 @@ This tool receives webhooks from GitHub and passes the data along to a
 user-defined function. It validates the HMAC signature, and checks that the
 originating IP address comes from the GitHub IP block.
 
+Supports Flask >= 0.9
+
 Installation
 ------------
 

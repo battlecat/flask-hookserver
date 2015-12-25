@@ -41,12 +41,17 @@ class Hooks(object):
             if app.config['VALIDATE_SIGNATURE']:
                 key = current_app.config['GITHUB_WEBHOOKS_KEY']
                 signature = request.headers.get('X-Hub-Signature')
-                data = request.get_data()
+
+                if hasattr(request, 'get_data'):
+                    # Werkzeug >= 0.9
+                    payload = request.get_gata()
+                else:
+                    payload = request.data
 
                 if not signature:
                     raise BadRequest('Missing signature')
 
-                if not check_signature(signature, key, data):
+                if not check_signature(signature, key, payload):
                     raise BadRequest('Wrong signature')
 
             event = request.headers.get('X-GitHub-Event')
@@ -56,7 +61,11 @@ class Hooks(object):
             elif not guid:
                 raise BadRequest('Missing header: X-GitHub-Delivery')
 
-            data = request.get_json()
+            if hasattr(request, 'get_json'):
+                # Flask >= 0.10
+                data = request.get_json()
+            else:
+                data = request.json
 
             if event in self._hooks:
                 return self._hooks[event](data, guid)

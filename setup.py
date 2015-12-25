@@ -19,12 +19,12 @@ with open('HISTORY.rst', 'r') as f:
     history = f.read()
 
 requirements = [
-    'Flask>=0.10.1',
+    'Flask>=0.9',
+    'Werkzeug>=0.7',
     'requests[security]>=2.3.0',
-    'Werkzeug>=0.9',
 ]
 if sys.version_info < (3, 3):
-    requirements.append('ipaddress>=1.0.6')
+    requirements.append('ipaddress>=1.0.3')
 
 setup(
     name='Flask-Hookserver',
