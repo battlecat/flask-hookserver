@@ -8,7 +8,7 @@ History
 
 - Refactor into a proper Flask extension
 - Move from hookserver to flask.ext.hookserver
-- Introduce a single config object that can be registered to multiple apps
+- Introduce a single hooks object that can be registered to multiple apps
 - Remove importable blueprint and standalone Flask app
 - Rename KEY to GITHUB_WEBHOOKS_KEY
 
