@@ -2,6 +2,7 @@
 *.py[co]
 __pycache__
 build
+docs/_build
 dist
 .cache
 .coverage
