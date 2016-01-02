@@ -21,7 +21,7 @@ def nocheck():
 def override_github(monkeypatch):
     """Prevent an actual request to GitHub."""
     monkeypatch.delattr('requests.sessions.Session.request')
-    monkeypatch.setattr('flask_hookserver.util.load_github_hooks',
+    monkeypatch.setattr('flask_hookserver.load_github_hooks',
                         lambda: [u'192.30.252.0/22'])
 
 

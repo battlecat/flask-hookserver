@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """Test utility functions used for request validation."""
 
-from flask.ext.hookserver.util import timed_memoize, is_github_ip, \
-                                      check_signature
+from flask.ext.hookserver import _timed_memoize, is_github_ip, check_signature
 from time import sleep, time
 import pytest
 
@@ -11,14 +10,14 @@ import pytest
 def override_github(monkeypatch):
     """Prevent an actual request to GitHub."""
     monkeypatch.delattr('requests.sessions.Session.request')
-    monkeypatch.setattr('flask.ext.hookserver.util.load_github_hooks',
+    monkeypatch.setattr('flask.ext.hookserver.load_github_hooks',
                         lambda: [u'192.30.252.0/22'])
 
 
 def test_timed_memoize():
     i = [0]
 
-    @timed_memoize(0.2)
+    @_timed_memoize(0.2)
     def get_i():
         return i[0]
 
