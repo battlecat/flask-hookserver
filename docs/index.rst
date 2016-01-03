@@ -1,7 +1,7 @@
 Flask-Hookserver
 ================
 
-.. module:: flask.ext.hookserver
+.. module:: flask_hookserver
 
 Support GitHub webhooks with Flask.
 
@@ -85,5 +85,3 @@ API Reference
 
 .. autoclass:: Hooks
    :members:
-
-.. autofunction:: load_github_hooks
