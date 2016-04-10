@@ -30,11 +30,11 @@ class Hooks(object):
     :param url: the url that events will be posted to
     """
 
-    def __init__(self, app=None, url='/hooks', **kwargs):
+    def __init__(self, app=None, url='/hooks'):
         """Initialize the extension."""
         self._hooks = {}
         if app is not None:
-            self.init_app(app, url=url, **kwargs)
+            self.init_app(app, url=url)
 
     def init_app(self, app, url='/hooks'):
         """Register the URL route to the application.
