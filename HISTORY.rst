@@ -3,6 +3,11 @@
 History
 -------
 
+1.1.0 (2016-04-10)
+++++++++++++++++++
+
+- Use GITHUB_WEBHOOKS_KEY if provided, fallback on SECRET_KEY
+
 1.0.0 (2015-12-25)
 ++++++++++++++++++
 
