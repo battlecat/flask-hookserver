@@ -149,6 +149,24 @@ def test_all_checks(app):
     assert rv.status_code == 200
 
 
+def test_secret_key(app):
+    app.wsgi_app = ProxyFix(app.wsgi_app)
+    app.config['SECRET_KEY'] = b'Some key'
+    app.config['VALIDATE_IP'] = False
+    app.config['VALIDATE_SIGNATURE'] = True
+    client = app.test_client()
+
+    sig = 'e1590250fd7dd7882185062d1ade5bef8cb4319c'
+    headers = {
+        'X-Hub-Signature': 'sha1=' + sig,
+        'X-GitHub-Event': 'ping',
+        'X-GitHub-Delivery': 'abc',
+    }
+    rv = client.post('/hooks', content_type='application/json', data='{}',
+                     headers=headers)
+    assert rv.status_code == 200
+
+
 def test_different_url():
     app = flask.Flask(__name__)
     app.config['DEBUG'] = True

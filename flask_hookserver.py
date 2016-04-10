@@ -53,7 +53,7 @@ class Hooks(object):
                     raise Forbidden('Requests must originate from GitHub')
 
             if app.config['VALIDATE_SIGNATURE']:
-                key = app.config['GITHUB_WEBHOOKS_KEY']
+                key = app.config.get('GITHUB_WEBHOOKS_KEY', app.secret_key)
                 signature = request.headers.get('X-Hub-Signature')
 
                 if hasattr(request, 'get_data'):
