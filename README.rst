@@ -1,11 +1,14 @@
 Flask-Hookserver
 ================
 
-.. image:: https://img.shields.io/travis/nickfrostatx/flask-hookserver.svg
-    :target: https://travis-ci.org/nickfrostatx/flask-hookserver
+.. image:: https://travis-ci.org/nickfrostatx/flask-hookserver.svg?branch=master
+    :target: https://travis-ci.org/nickfrostatx/flask-hookserver?branch=master
 
-.. image:: https://img.shields.io/coveralls/nickfrostatx/flask-hookserver.svg
-    :target: https://coveralls.io/github/nickfrostatx/flask-hookserver
+.. image:: https://coveralls.io/repos/github/nickfrostatx/flask-hookserver/badge.svg?branch=master
+    :target: https://coveralls.io/github/nickfrostatx/flask-hookserver?branch=master
+
+.. image:: https://img.shields.io/badge/docs-latest-brightgreen.svg
+    :target: https://flask-hookserver.readthedocs.org/en/latest/
 
 .. image:: https://img.shields.io/pypi/v/flask-hookserver.svg
     :target: https://pypi.python.org/pypi/flask-hookserver
