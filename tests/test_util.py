@@ -31,26 +31,26 @@ def test_timed_memoize():
 
 
 def test_correct_ip():
-    assert is_github_ip('192.30.252.1') == True
+    assert is_github_ip('192.30.252.1')
 
 
 def test_ip_decoding():
-    assert is_github_ip(b'192.30.252.1') == True
-    assert is_github_ip(u'192.30.252.1') == True
+    assert is_github_ip(b'192.30.252.1')
+    assert is_github_ip(u'192.30.252.1')
 
 
 def test_mapped_ip():
-    assert is_github_ip('::ffff:c01e:fc01') == True
+    assert is_github_ip('::ffff:c01e:fc01')
 
 
 def test_bad_ips():
-    assert is_github_ip('192.30.251.255') == False
-    assert is_github_ip('192.31.0.1') == False
+    assert not is_github_ip('192.30.251.255')
+    assert not is_github_ip('192.31.0.1')
 
 
 def test_bad_mapped_ips():
-    assert is_github_ip('::ffff:c01e:fbff') == False
-    assert is_github_ip('::ffff:c01f:1') == False
+    assert not is_github_ip('::ffff:c01e:fbff')
+    assert not is_github_ip('::ffff:c01f:1')
 
 
 def test_good_signatures():
@@ -61,7 +61,7 @@ def test_good_signatures():
         b'hi': b'sha1=5e6d699dd7c8ca40c90d0daa910c5caddef89421',
     }
     for d in signatures:
-        assert check_signature(signatures[d], key, d) == True
+        assert check_signature(signatures[d], key, d)
 
 
 def test_unicode_key():
@@ -81,4 +81,4 @@ def test_bad_signatures():
         b'do-re-mi': b'sha1=baby you and me',
     }
     for d in signatures:
-        assert check_signature(signatures[d], key, d) == False
+        assert not check_signature(signatures[d], key, d)
