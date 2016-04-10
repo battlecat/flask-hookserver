@@ -8,8 +8,7 @@ Flask-Hookserver: GitHub webhooks using Flask.
 
 from flask import request
 from functools import wraps
-from werkzeug.exceptions import BadRequest, Forbidden
-from werkzeug.exceptions import ServiceUnavailable
+from werkzeug.exceptions import BadRequest, Forbidden, ServiceUnavailable
 import hashlib
 import hmac
 import ipaddress
@@ -24,27 +23,26 @@ __license__ = 'MIT'
 
 class Hooks(object):
 
-    """Main extension class.
+    """The Hooks object registers handlers to GitHub webhooks events.
 
-    The flow of each post request
-     - If VALIDATE_IP is set, see if the source IP address comes from
-       the GitHub IP block (err 403)
-     - if VALIDATE_SIGNATURE is set, compute the HMAC signature and
-       compare against the provided X-Hub-Signature header (err 400)
-     - See if X-GitHub-Event or X-GitHub-Delivery are missing (err 400)
-     - Make sure we received valid JSON (err 400)
-     - If the supplied hook has been registered, call it with the
-       provided data
+    :param app: the optional :class:`~flask.Flask` instance to register
+                the extension
+    :param url: the url that events will be posted to
     """
 
-    def __init__(self, app=None, **kwargs):
-        """Optionally, initialize the app."""
+    def __init__(self, app=None, url='/hooks', **kwargs):
+        """Initialize the extension."""
         self._hooks = {}
         if app is not None:
-            self.init_app(app, **kwargs)
+            self.init_app(app, url=url, **kwargs)
 
     def init_app(self, app, url='/hooks'):
-        """Register the URL route to the application."""
+        """Register the URL route to the application.
+
+        :param app: the optional :class:`~flask.Flask` instance to
+                register the extension
+        :param url: the url that events will be posted to
+        """
         app.config.setdefault('VALIDATE_IP', True)
         app.config.setdefault('VALIDATE_SIGNATURE', True)
 
@@ -96,7 +94,10 @@ class Hooks(object):
             raise Exception('%s hook already registered' % hook_name)
 
     def hook(self, hook_name):
-        """Return a decorator that calls register_hook."""
+        """A decorator that's used to register a new hook handler.
+
+        :param hook_name: the event to handle
+        """
         def wrapper(fn):
             self.register_hook(hook_name, fn)
             return fn
