@@ -120,6 +120,7 @@ html_theme = 'flask_small'
 # documentation.
 html_theme_options = {
     'github_fork': 'nickfrostatx/flask-hookserver',
+    'index_logo': False,
 }
 
 # Add any paths that contain custom themes here, relative to this directory.
