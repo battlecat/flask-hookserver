@@ -7,7 +7,7 @@ Flask-Hookserver
 .. image:: https://coveralls.io/repos/github/nickfrostatx/flask-hookserver/badge.svg?branch=master
     :target: https://coveralls.io/github/nickfrostatx/flask-hookserver?branch=master
 
-.. image:: https://img.shields.io/badge/docs-latest-brightgreen.svg
+.. image:: https://readthedocs.org/projects/flask-hookserver/badge/?version=latest
     :target: https://flask-hookserver.readthedocs.org/en/latest/
 
 .. image:: https://img.shields.io/pypi/v/flask-hookserver.svg
