@@ -10,4 +10,4 @@ hooks = Hooks(app, url='/hooks')
 def ping(data, guid):
     return 'pong'
 
-app.run(0.0.0.0)
+app.run('0.0.0.0')
