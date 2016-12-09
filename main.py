@@ -1,4 +1,5 @@
 from flask import Flask
+import os
 from flask.ext.hookserver import Hooks
 
 app = Flask(__name__)
@@ -12,7 +13,10 @@ def ping(data, guid):
 
 @hooks.hook('push')
 def new_code(data, delivery):
-    print('New push to %s' % data['ref'])
-    return 'Thanks'
+    status = os.system('sh ~/quokka-env/flask-hookserver/push.sh')   
+#    print status  
+#    print('New push to %s' % data['ref'])
+#    return 'Thanks'
+    return status
 
 app.run(host='0.0.0.0',port='8000')
