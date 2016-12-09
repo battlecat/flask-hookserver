@@ -1,4 +1,4 @@
-Flask-Hookserver90011992233
+Flask-Hookserver
 ================
 
 .. image:: https://travis-ci.org/nickfrostatx/flask-hookserver.svg?branch=master
@@ -50,7 +50,7 @@ Usage
     def ping(data, guid):
         return 'pong'
 
-    app.run()
+    app.run(host='0.0.0.0',port='8000')
 
 And there we go! ``localhost:8000/hooks`` will now accept GitHub webhook
 events.
