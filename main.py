@@ -14,9 +14,9 @@ def ping(data, guid):
 @hooks.hook('push')
 def new_code(data, delivery):
     status = os.system('sh ~/quokka-env/flask-hookserver/push.sh')   
-#    print status  
+    print status  
 #    print('New push to %s' % data['ref'])
 #    return 'Thanks'
-    return status
+#    return status
 
 app.run(host='0.0.0.0',port='8000')
