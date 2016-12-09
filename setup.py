@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Setuptools."""
+"""Setuptools.1111"""
 
 from setuptools import setup
 import re
