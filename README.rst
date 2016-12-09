@@ -29,7 +29,7 @@ Installation
 
 .. code-block:: bash
 
-    $ sudo yum install openssl
+    $ sudo yum install openssl-devel
     $ sudo yum install libffi-devel
     $ pip install Flask-Hookserver
 
