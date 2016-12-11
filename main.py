@@ -16,7 +16,7 @@ def new_code(data, delivery):
     os.system('sh ~/quokka-env/flask-hookserver/push.sh')   
 #    print res  
     print('New push to %s' % data['ref'])
-#    return 'Thanks'
+    return 'Thanks'
    
 
 app.run(host='0.0.0.0',port='8000')
