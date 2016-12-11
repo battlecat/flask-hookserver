@@ -11,13 +11,13 @@ hooks = Hooks(app, url='/hooks')
 def ping(data, guid):
     return 'pong'
 
-@hooks.hook('push')
-def new_code(data, delivery):
+#@hooks.hook('push')
+#def new_code(data, delivery):
 #    os.system('sh ~/quokka-env/flask-hookserver/push.sh')
 #    os.system('git pull') 
 #    print res  
-    print('New push to %s' % data['ref'])
-    return 'Thanks'
+#    print('New push to %s' % data['ref'])
+#    return 'Thanks'
    
 
 app.run(host='0.0.0.0',port='8000')
