@@ -66,7 +66,7 @@ create a file push.sh in this repo only with content:
 
     #! /bin/bash
 
-    git pull
+    sudo git pull
 
 screen python ~/flask-hookserver/main.py
 
