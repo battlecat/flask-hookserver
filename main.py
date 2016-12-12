@@ -1,4 +1,4 @@
-improt os
+import os
 from flask import Flask
 from flask.ext.hookserver import Hooks
 
