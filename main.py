@@ -16,7 +16,7 @@ def new_code(data, delivery):
     res = os.system('sh ~/quokka-env/flask-hookserver/push.sh')
 #    os.system('git pull') 
     print res  
-#    print('New push to %s' % data['ref'])
+    print('New push to %s' % data['ref'])
     return 'Thanks'
    
 
