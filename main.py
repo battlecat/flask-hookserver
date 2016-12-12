@@ -13,7 +13,7 @@ def ping(data, guid):
 
 @hooks.hook('push')
 def new_code(data, delivery):
-    res = os.system('sh ~/quokka-env/flask-hookserver/push.sh')
+    res = os.system('sh ~/quokka-env/quokka/quokka-push.sh')
     print res  
     print('New push to %s' % data['ref'])
     return 'Thanks'   
