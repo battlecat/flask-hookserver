@@ -55,6 +55,22 @@ Usage
 And there we go! ``localhost:8000/hooks`` will now accept GitHub webhook
 events.
 
+Another Usage
+-----
+
+Switch to your destination repo
+
+create a file push.sh in this repo only with content:
+
+#!bash
+git pull
+
+screen python ~/flask-hookserver/main.py
+
+edit your webhook config with http://xxxx.xxxx:8000/hooks and only for push events option
+
+it is done.
+
 Config
 ------
 
