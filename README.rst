@@ -62,7 +62,7 @@ Switch to your destination repo
 
 create a file push.sh in this repo only with content:
 
-#!bash
+#! /bin/bash
 git pull
 
 screen python ~/flask-hookserver/main.py
