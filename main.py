@@ -9,7 +9,7 @@ hooks = Hooks(app, url='/hooks')
 
 @hooks.hook('ping')
 def ping(data, guid):
-    return 'pongya'
+    return 'pongya2'
 
 @hooks.hook('push')
 def new_code(data, delivery):
