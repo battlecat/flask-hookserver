@@ -3,7 +3,7 @@
 "server_port":3000, 
 "local_address":"127.0.0.1",
 "local_port":3000, 
-"password":"indy7721", 
+"password":"888888", 
 "timeout":300, 
 "method":"aes-256-cfb",
 "fast_open":false
